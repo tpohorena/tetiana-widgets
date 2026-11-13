@@ -6,31 +6,31 @@
 <title>Ma playlist</title>
 <style>
   :root{--bg:#1f1a16;--card:#2a221c;--ink:#efe3d3;--muted:#a8957f;--line:#3b3028;--acc:#c9a27a;--hd:#5a3f2e}
-  html,body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif}
-  .w{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);max-width:520px}
-  .hd{background:var(--hd);padding:8px 12px;font:600 13px/1 Georgia,"Times New Roman",serif;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:center}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .w{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);height:100%;box-sizing:border-box;display:flex;flex-direction:column}
+  .hd{flex:none;background:var(--hd);padding:8px 12px;font:600 13px/1 Georgia,"Times New Roman",serif;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:center}
   .hd small{font:11px system-ui,sans-serif;color:#e0cdb6;opacity:.8}
-  .top{display:flex;gap:12px;padding:12px}
-  .art{width:96px;height:96px;border-radius:8px;object-fit:cover;background:#3a2e25;flex:none}
+  .top{display:flex;gap:10px;padding:10px;flex:none}
+  .art{width:64px;height:64px;border-radius:8px;object-fit:cover;background:#3a2e25;flex:none}
   .meta{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
-  .tt{font:600 15px/1.2 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tt{font:600 14px/1.2 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ar{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .bar{height:3px;background:#3d3229;border-radius:3px;margin:8px 12px 0;overflow:hidden}
+  .bar{flex:none;height:3px;background:#3d3229;border-radius:3px;margin:8px 12px 0;overflow:hidden}
   .bar i{display:block;height:100%;width:0;background:var(--acc)}
-  .ctl{display:flex;justify-content:center;align-items:center;gap:18px;padding:8px 0 10px}
+  .ctl{flex:none;display:flex;justify-content:center;align-items:center;gap:18px;padding:8px 0 10px}
   button{all:unset;cursor:pointer;color:var(--ink);display:grid;place-items:center}
   button:focus-visible{outline:1px solid var(--acc);border-radius:50%}
   .pp{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#2a221c}
   svg{width:16px;height:16px;fill:currentColor}
-  ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-  li{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+  ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);flex:1;min-height:0;overflow:auto}
+  li{display:flex;align-items:center;gap:8px;padding:6px 12px;border-bottom:1px solid var(--line);cursor:pointer}
   li:last-child{border-bottom:0}
   li[aria-current="true"]{background:#33291f}
   li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   li .n span{color:var(--muted)}
   li .d{color:var(--muted);font-variant-numeric:tabular-nums}
   li a{color:var(--acc);text-decoration:none;font-size:12px;padding:2px 4px}
-  .ft{padding:7px 12px;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}
+  .ft{flex:none;padding:6px 12px;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}
   .ft a{color:var(--acc)}
   .msg{padding:14px 12px;color:var(--muted)}
 </style>

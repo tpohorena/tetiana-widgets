@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mon espace personnel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#191411; --card:#221b16; --card2:#2a211b; --line:#3a2f27; --ink:#efe3d3; --soft:#cbb9a3;
+    --muted:#9a8670; --acc:#c9a27a; --acc2:#8a5f3c; --chip:#2f251e;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif; --sans:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.45 var(--sans)}
+  a{color:inherit;text-decoration:none}
+  .grid{display:grid;grid-template-columns:200px minmax(0,1fr) 260px;gap:14px;padding:14px;max-width:1240px;margin:0 auto}
+  .col{display:flex;flex-direction:column;gap:14px;min-width:0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .lbl{display:flex;align-items:center;gap:7px;font:600 10.5px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin:0 0 10px}
+  .lbl svg{width:12px;height:12px;stroke:var(--acc);fill:none;stroke-width:1.6}
+  .nav a{display:flex;align-items:center;gap:9px;padding:5px 2px;color:var(--ink);border-radius:6px;font-size:13px}
+  .nav a:hover{background:var(--card2)}
+  .nav svg{width:15px;height:15px;flex:none;stroke:var(--acc);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .sep{height:1px;background:var(--line);margin:8px 0}
+  .act a{display:flex;align-items:center;gap:8px;margin:0 0 6px;padding:7px 10px;background:var(--chip);border:1px solid var(--line);border-radius:7px;font-size:12.5px}
+  .act a:hover{border-color:var(--acc2)}
+  .act a b{color:var(--acc);font-weight:600}
+  .aff{text-align:center;padding:18px 12px}
+  .aff p{margin:0;font:italic 500 17px/1.3 var(--serif);color:var(--ink)}
+  .aff span{display:block;margin-top:8px;color:var(--acc)}
+  .tall2{flex:1;min-height:200px;border-radius:10px;border:1px solid var(--line);background:var(--card2) center/cover no-repeat}
+  .strip{display:grid;grid-template-columns:1fr 1fr;gap:14px}.strip .aff{display:flex;flex-direction:column;justify-content:center}
+  .tall{border-radius:10px;border:1px solid var(--line);overflow:hidden;min-height:150px;background:var(--card2) center 40%/cover no-repeat}
+  .hello{display:grid;grid-template-columns:42% 1fr;gap:16px;padding:12px}
+  .hello .ph{border-radius:8px;min-height:170px;background:var(--card2) center/cover no-repeat}
+  .hello h1{margin:4px 0 6px;font:600 28px/1.1 var(--serif)}
+  .hello .q{margin:0 0 4px;font:italic 500 17px/1.3 var(--serif);color:var(--soft)}
+  .hello .qa{font-size:11.5px;color:var(--muted);margin-bottom:12px}
+  .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .chip{background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:8px 9px;font-size:11.5px;color:var(--soft);min-width:0}
+  .chip b{display:block;color:var(--ink);font-weight:500;font-size:12.5px;margin-top:2px;overflow-wrap:anywhere}
+  .sp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .sp a{display:block;background:var(--card2);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .sp a:hover{border-color:var(--acc2)}
+  .sp .im{aspect-ratio:3/2;background:#2b221c center/cover no-repeat}
+  .sp .tx{padding:8px 10px}
+  .sp .tt{font:600 15.5px/1.15 var(--serif)}
+  .sp .ds{font-size:11px;color:var(--muted);margin-top:2px}
+  .pl{padding:0;overflow:hidden;height:300px}
+  .pl iframe{width:100%;height:100%;border:0;display:block}
+  .list .it{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .list .it:last-child{border-bottom:0}
+  .list .d{color:var(--acc);white-space:nowrap;min-width:64px;font-variant-numeric:tabular-nums}
+  .list .empty{color:var(--muted);font-style:italic}
+  .src{margin-top:8px;font-size:10.5px;color:var(--muted)}
+  .fr .w{font:600 21px/1.1 var(--serif)}
+  .fr .tr{color:var(--soft);margin:3px 0 6px}
+  .fr .ex{font:italic 500 15px/1.3 var(--serif);color:var(--ink)}
+  .fr a{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--acc)}
+  .ssn{padding:0;overflow:hidden;height:150px}
+  .ssn iframe{width:100%;height:100%;border:0;display:block}
+  .foot{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;color:var(--muted);font:600 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:6px 0 2px}
+  .foot span:before{content:"✦ ";color:var(--acc)}
+  @media (max-width:980px){.grid{grid-template-columns:180px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;}.right .pl{grid-row:span 2}}
+  @media (max-width:700px){
+    .grid{grid-template-columns:1fr;padding:10px;gap:10px}
+    .left{order:2}.center{order:1}.right{order:3;display:flex}
+    .hello{grid-template-columns:1fr}.hello .ph{min-height:150px}
+    .sp{grid-template-columns:1fr 1fr}
+    .strip{grid-template-columns:1fr}.tall{min-height:140px}.tall2{display:none}
+    .foot{grid-template-columns:1fr 1fr;gap:8px;order:4}
+  }
+</style>
+</head>
+<body>
+<div class="grid" id="g">
+  <div class="col left">
+    <div class="card nav"><div class="lbl" id="l-nav"></div><div id="nav"></div></div>
+    <div class="card act"><div class="lbl" id="l-act"></div><div id="act"></div></div>
+    <div class="tall2" id="tall2"></div>
+  </div>
+  <div class="col center">
+    <div class="card hello">
+      <div class="ph" id="hph"></div>
+      <div>
+        <h1 id="hi"></h1>
+        <p class="q" id="q"></p><div class="qa" id="qa"></div>
+        <div class="chips">
+          <div class="chip">Aujourd’hui<b id="c1"></b></div>
+          <div class="chip">Mes événements<b id="c2"></b></div>
+          <div class="chip">Mes tâches<b id="c3"></b></div>
+        </div>
+      </div>
+    </div>
+    <div class="card"><div class="lbl" id="l-sp"></div><div class="sp" id="sp"></div></div>
+    <div class="strip">
+      <div class="card aff"><div class="lbl" style="justify-content:center" id="l-aff"></div><p id="aff"></p><span>♡</span></div>
+      <div class="tall" id="tall"></div>
+    </div>
+  </div>
+  <div class="col right">
+    <div class="card pl"><iframe id="pl" title="Ma playlist" loading="lazy"></iframe></div>
+    <div class="card list"><div class="lbl" id="l-av"></div><div id="av"></div><div class="src" id="avs"></div></div>
+    <div class="card fr"><div class="lbl" id="l-fr"></div><div class="w" id="fw"></div><div class="tr" id="ft"></div><div class="ex" id="fe"></div><a id="fl">Mon français →</a></div>
+    <div class="card ssn"><iframe id="ssn" title="Ambiance de saison" loading="lazy"></iframe></div>
+  </div>
+  <div class="foot"><span>Plus de clarté</span><span>Plus d’équilibre</span><span>Plus de progrès</span><span>Plus de sérénité</span></div>
+</div>
+<script>
+(function(){
+  var BASE='https://tpohorena.github.io/tetiana-widgets/';
+  var N=function(id){return 'https://www.notion.so/'+id};
+  // Типові значення: без персональних даних. Особисті дані приходять лише через параметр ?d= (зберігається в Notion).
+  var D={
+    hi:'Bonjour ♡', quote:'« Petit à petit, l’oiseau fait son nid. »', qa:'— proverbe',
+    aff:'Un petit pas chaque jour suffit.',
+    date:'', events:'—', tasks:'—', avenir:[], avsrc:'Google Calendar · Family PP',
+    fr:{w:'',t:'',e:''},
+    pl:{ids:'',date:'',mood:''},
+    hph:BASE+'personnel/aujourdhui.jpg', tall:BASE+'personnel/deco-centre.jpg', tall2:BASE+'personnel/deco-gauche.jpg',
+    nav:[['home','Accueil','4161c0bdfeab81909cf8fb3591d3c6e5'],['brief','Travail','4161c0bdfeab81f68b16db21fab2db02'],['book','Mes études — MCR','4161c0bdfeab81cfaedee64f78c6e143']],
+    sp:[['Mon français','Vocabulaire · Pratique · Révision','carte-francais.jpg','4171c0bdfeab81878b2eee50922d4034','chat'],
+        ['Développement & IA','Apprendre · Explorer · Appliquer','carte-developpement.jpg','4171c0bdfeab81ea9937f6f869ee39fb','spark'],
+        ['Mes habitudes','Routines · Régularité · Progrès','carte-habitudes.jpg','4171c0bdfeab81029109d46255e13e4d','check'],
+        ['Sport & alimentation','Mouvement · Repas · Objectifs','carte-sport.jpg','4171c0bdfeab8173b67bdf8223e53b7b','leaf'],
+        ['Envies & achats','Wishlist · Achats','carte-envies.jpg','4171c0bdfeab81299b5efca35b88010b','bag'],
+        ['Cadeaux & proches','Idées · Occasions','carte-cadeaux.jpg','4171c0bdfeab81e99d65cb1f8ce72166','gift']],
+    act:[['Nouvelle tâche','43f7a7b661e14636aab108b7c6a397b5?v=4171c0bdfeab8143a0dd000ce84d442c'],
+         ['Nouvelle idée','3ac51a13e0144c719d2bddaa6cf641a5?v=4171c0bdfeab81519de5000c3619acf8'],
+         ['Ajouter une envie','bec6583d7c2e42a3bcaf7c2fd7bdb6b2?v=4171c0bdfeab81b0bbca000ce16765c9'],
+         ['Idée cadeau','4171c0bdfeab81e99d65cb1f8ce72166']]
+  };
+  try{
+    var q=new URLSearchParams(location.search).get('d');
+    if(q){var j=JSON.parse(decodeURIComponent(escape(atob(q.replace(/-/g,'+').replace(/_/g,'/')))));for(var k in j)D[k]=j[k]}
+  }catch(e){}
+  var I={home:'<path d="M3 11l9-7 9 7v9h-6v-6H9v6H3z"/>',brief:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V4h6v3"/>',
+    book:'<path d="M4 5c3-1 6-1 8 1v14c-2-2-5-2-8-1zM20 5c-3-1-6-1-8 1v14c2-2 5-2 8-1z"/>',chat:'<path d="M4 5h16v11H9l-5 4z"/>',
+    spark:'<path d="M12 3v5M12 16v5M3 12h5M16 12h5M6 6l3 3M15 15l3 3M18 6l-3 3M9 15l-3 3"/>',check:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/>',
+    leaf:'<path d="M5 19C5 10 10 5 20 5c0 10-5 15-15 14zM5 19l9-9"/>',bag:'<path d="M5 8h14l-1 12H6zM9 8V6a3 3 0 0 1 6 0v2"/>',
+    gift:'<rect x="4" y="9" width="16" height="11" rx="1"/><path d="M4 13h16M12 9v11M12 9c-3 0-5-1-5-3s3-2 5 3c2-5 5-5 5-3s-2 3-5 3"/>',
+    star:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.5 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+    bolt:'<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',heart:'<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>',
+    cal:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',fr:'<path d="M5 5h14v10H10l-5 4z"/><path d="M9 9h6M9 12h4"/>',grid:'<rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/>'};
+  function sv(n){return '<svg viewBox="0 0 24 24">'+I[n]+'</svg>'}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function lab(id,ic,t){document.getElementById(id).innerHTML=sv(ic)+esc(t)}
+  function link(id){return N(id)}
+  lab('l-nav','star','Navigation');lab('l-act','bolt','Actions rapides');lab('l-aff','heart','Affirmation du jour');
+  lab('l-sp','grid','Mes espaces');lab('l-av','cal','À venir');lab('l-fr','fr','Français du jour');
+  var nav=D.nav.map(function(n){return '<a href="'+link(n[2])+'" target="_blank" rel="noopener">'+sv(n[0])+esc(n[1])+'</a>'}).join('');
+  nav+='<div class="sep"></div>'+D.sp.map(function(s){return '<a href="'+link(s[3])+'" target="_blank" rel="noopener">'+sv(s[4]||'star')+esc(s[0])+'</a>'}).join('');
+  document.getElementById('nav').innerHTML=nav;
+  document.getElementById('act').innerHTML=D.act.map(function(a){return '<a href="'+link(a[1])+'" target="_blank" rel="noopener"><b>+</b>'+esc(a[0])+'</a>'}).join('');
+  document.getElementById('aff').textContent=D.aff;
+  function bg(id,u){if(u)document.getElementById(id).style.backgroundImage='url("'+String(u).replace(/"/g,'')+'")'}
+  bg('tall',D.tall);bg('tall2',D.tall2);bg('hph',D.hph);
+  document.getElementById('hi').textContent=D.hi;document.getElementById('q').textContent=D.quote;document.getElementById('qa').textContent=D.qa;
+  document.getElementById('c1').textContent=D.date||new Intl.DateTimeFormat('fr-FR',{timeZone:'Europe/Paris',weekday:'short',day:'numeric',month:'long'}).format(new Date());
+  document.getElementById('c2').textContent=D.events;document.getElementById('c3').textContent=D.tasks;
+  document.getElementById('sp').innerHTML=D.sp.map(function(s){var img=/^https?:/.test(s[2])?s[2]:BASE+'personnel/'+s[2];
+    return '<a href="'+link(s[3])+'" target="_blank" rel="noopener"><div class="im" style="background-image:url(\''+img.replace(/'/g,'')+'\')"></div><div class="tx"><div class="tt">'+esc(s[0])+'</div><div class="ds">'+esc(s[1])+'</div></div></a>'}).join('');
+  document.getElementById('av').innerHTML=D.avenir.length?D.avenir.map(function(a){return '<div class="it"><span class="d">'+esc(a[0])+'</span><span>'+esc(a[1])+'</span></div>'}).join(''):'<div class="empty">Rien de prévu pour l’instant.</div>';
+  document.getElementById('avs').textContent=D.avsrc;
+  document.getElementById('fw').textContent=D.fr.w||'—';document.getElementById('ft').textContent=D.fr.t||'';document.getElementById('fe').textContent=D.fr.e||'';
+  document.getElementById('fl').href=link('4171c0bdfeab81878b2eee50922d4034');document.getElementById('fl').target='_blank';
+  var p=D.pl||{};document.getElementById('pl').src=BASE+'playlist.html?ids='+encodeURIComponent(p.ids||'')+'&date='+encodeURIComponent(p.date||'')+'&mood='+encodeURIComponent(p.mood||'');
+  document.getElementById('ssn').src=BASE;
+})();
+</script>
+</body>
+</html>

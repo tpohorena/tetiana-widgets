@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ma playlist</title>
+<style>
+  :root{--bg:#1f1a16;--card:#2a221c;--ink:#efe3d3;--muted:#a8957f;--line:#3b3028;--acc:#c9a27a;--hd:#5a3f2e}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font:13px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .w{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);max-width:520px}
+  .hd{background:var(--hd);padding:8px 12px;font:600 13px/1 Georgia,"Times New Roman",serif;letter-spacing:.02em;display:flex;justify-content:space-between;align-items:center}
+  .hd small{font:11px system-ui,sans-serif;color:#e0cdb6;opacity:.8}
+  .top{display:flex;gap:12px;padding:12px}
+  .art{width:96px;height:96px;border-radius:8px;object-fit:cover;background:#3a2e25;flex:none}
+  .meta{min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;gap:3px}
+  .tt{font:600 15px/1.2 Georgia,serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ar{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bar{height:3px;background:#3d3229;border-radius:3px;margin:8px 12px 0;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:var(--acc)}
+  .ctl{display:flex;justify-content:center;align-items:center;gap:18px;padding:8px 0 10px}
+  button{all:unset;cursor:pointer;color:var(--ink);display:grid;place-items:center}
+  button:focus-visible{outline:1px solid var(--acc);border-radius:50%}
+  .pp{width:34px;height:34px;border-radius:50%;background:var(--ink);color:#2a221c}
+  svg{width:16px;height:16px;fill:currentColor}
+  ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  li{display:flex;align-items:center;gap:8px;padding:7px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+  li:last-child{border-bottom:0}
+  li[aria-current="true"]{background:#33291f}
+  li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  li .n span{color:var(--muted)}
+  li .d{color:var(--muted);font-variant-numeric:tabular-nums}
+  li a{color:var(--acc);text-decoration:none;font-size:12px;padding:2px 4px}
+  .ft{padding:7px 12px;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}
+  .ft a{color:var(--acc)}
+  .msg{padding:14px 12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="hd">Ma playlist <small id="day"></small></div>
+  <div class="top">
+    <img class="art" id="art" alt="">
+    <div class="meta">
+      <div class="tt" id="tt">La sélection du jour</div>
+      <div class="ar" id="ar"></div>
+      <div class="ar" id="mood"></div>
+    </div>
+  </div>
+  <div class="bar"><i id="pr"></i></div>
+  <div class="ctl">
+    <button id="prev" aria-label="Précédent"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+    <button id="play" class="pp" aria-label="Lecture"><svg viewBox="0 0 24 24" id="ico"><path d="M8 5v14l11-7z"/></svg></button>
+    <button id="next" aria-label="Suivant"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+  </div>
+  <ol id="list"><li class="msg">Chargement…</li></ol>
+  <div class="ft">Extraits de 30 s · écoute complète : « ↗ » ouvre Apple Music</div>
+</div>
+<audio id="au" preload="none"></audio>
+<script>
+(function(){
+  var q=new URLSearchParams(location.search);
+  var ids=(q.get('ids')||'').split(',').filter(function(x){return /^\d+$/.test(x)}).slice(0,10);
+  document.getElementById('mood').textContent=q.get('mood')||'';
+  document.getElementById('day').textContent=q.get('date')||'';
+  var PH='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" fill="#3a2e25"/><path d="M58 28v30a8 8 0 1 1-4-7V34l-16 4v24a8 8 0 1 1-4-7V34z" fill="#a8957f"/></svg>');
+  document.getElementById('art').onerror=function(){if(this.src!==PH)this.src=PH};
+  var list=document.getElementById('list'),au=document.getElementById('au'),tracks=[],cur=0;
+  function fmt(ms){var s=Math.round((ms||0)/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
+  function esc(s){return String(s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function link(t){return String(t.trackViewUrl||'').replace(/[?&]uo=\d+/,'')}
+  function show(i){cur=i;var t=tracks[i];if(!t)return;
+    document.getElementById('art').src=(t.artworkUrl100||'').replace('100x100bb','300x300bb');
+    document.getElementById('tt').textContent=t.trackName;document.getElementById('ar').textContent=t.artistName;
+    [].forEach.call(list.children,function(li,k){li.setAttribute('aria-current',k===i)})}
+  function setIcon(p){document.getElementById('ico').innerHTML=p?'<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>':'<path d="M8 5v14l11-7z"/>';
+    document.getElementById('play').setAttribute('aria-label',p?'Pause':'Lecture')}
+  function play(i){if(i!==cur||!au.src){show(i);au.src=tracks[i].previewUrl||''}
+    if(!au.src){window.open(link(tracks[i]),'_blank');return}
+    au.play().catch(function(){window.open(link(tracks[i]),'_blank')})}
+  document.getElementById('play').onclick=function(){if(!tracks.length)return;au.paused?play(cur):au.pause()};
+  document.getElementById('next').onclick=function(){if(tracks.length)play((cur+1)%tracks.length)};
+  document.getElementById('prev').onclick=function(){if(tracks.length)play((cur-1+tracks.length)%tracks.length)};
+  au.onplay=function(){setIcon(true)};au.onpause=function(){setIcon(false)};
+  au.onended=function(){if(cur<tracks.length-1)play(cur+1);else setIcon(false)};
+  au.ontimeupdate=function(){document.getElementById('pr').style.width=(au.duration?au.currentTime/au.duration*100:0)+'%'};
+  function render(){
+    if(!tracks.length){list.innerHTML='<li class="msg">Sélection indisponible pour le moment.</li>';return}
+    list.innerHTML=tracks.map(function(t,i){return '<li data-i="'+i+'"><div class="n">'+esc(t.trackName)+' <span>· '+esc(t.artistName)+
+      '</span></div><div class="d">'+fmt(t.trackTimeMillis)+'</div><a href="'+esc(link(t))+'" target="_blank" rel="noopener" title="Ouvrir dans Apple Music" aria-label="Ouvrir dans Apple Music">↗</a></li>'}).join('');
+    [].forEach.call(list.querySelectorAll('li'),function(li){li.onclick=function(e){if(e.target.tagName==='A')return;play(+li.dataset.i)}});
+    show(0)}
+  if(!ids.length){render();return}
+  // JSONP: iTunes Lookup API не завжди віддає CORS-заголовки для вбудованих сторінок
+  var done=false,sc=document.createElement('script');
+  window.__am=function(d){done=true;var by={};(d&&d.results||[]).forEach(function(t){if(t.kind==='song')by[t.trackId]=t});
+    tracks=ids.map(function(id){return by[id]}).filter(Boolean);render()};
+  sc.onerror=function(){if(!done)render()};
+  setTimeout(function(){if(!done)render()},8000);
+  sc.src='https://itunes.apple.com/lookup?country=fr&callback=__am&id='+ids.join(',');
+  document.head.appendChild(sc);
+})();
+</script>
+</body>
+</html>
